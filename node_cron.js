@@ -18,7 +18,6 @@ let url = [{'key': 'ifeng', 'url': 'https://news.ifeng.com/c/special/7tPlDSzDgVk
 async function getUrl(urlKey = '') {
     let urlData = _.find(url, {'key': urlKey});
     let tmpUrl = urlData['url'];
-
     console.info("正在请求地址：" + JSON.stringify({tmpUrl}));
     const res = await request.get(tmpUrl);
 
@@ -107,6 +106,5 @@ async function init() {
     console.info(finalData);
     process.exit();
 }
-
 init();
 
