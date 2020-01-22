@@ -28,9 +28,28 @@ async function getUrl(urlKey = '') {
     const res = await request.get(tmpUrl);
 
     finalData = await ifeng(res);
+    console.info(finalData);
+    finalData = await getLocation(finalData);
+
     fs.writeFileSync(path.join(__dirname, './', 'now.json'), JSON.stringify(finalData));
 
     // console.info(fileFlag);
+}
+
+async function getLocation(data = {}) {
+    for (let k in data['data']) {
+        let city = encodeURIComponent(data['data'][k]['name']);
+        let baiduUrl = `https://api.map.baidu.com/geocoder?address=${city}&output=json&key=f247cdb592eb43ebac6ccd27f796e2d2`;
+        const res = await request.get(baiduUrl);
+        let bdData = JSON.parse(res.text);
+
+        let lnglat = {'lnglat': []};
+        lnglat['lnglat'][0] = bdData['result']['location']['lng'];
+        lnglat['lnglat'][1] = bdData['result']['location']['lat'];
+        data['data'][k]['lnglat'] = lnglat;
+    }
+
+    return data;
 }
 
 async function ifeng(domData = {}) {
@@ -73,8 +92,11 @@ async function writeFinalData(data) {
         let obj = {};
         obj['name'] = v['arr'][0];
         obj['value'] = 0;
-        obj['remark'] = v['arr'][1];
-        if (v['arr'][1].indexOf('确诊') != -1) obj['value'] = v['num'][0] * 1;
+        obj['remark'] = '';
+        if (!_.isEmpty(v['arr'][1])) {
+            obj['remark'] = v['arr'][1];
+            if (v['arr'][1].indexOf('确诊') != -1) obj['value'] = v['num'][0] * 1;
+        }
 
         finalData['data'].push(obj);
     }
@@ -98,7 +120,7 @@ async function getDataGn(gn) {
 
 
         let arr = str.split(" ");
-        console.info(arr);
+        // console.info(arr);
 
         let numStr = _.isEmpty(arr[1]) ? [] : arr[1].match(/\d+(.\d+)?/g);
         returnData.push({'arr': arr, 'num': numStr});
@@ -109,7 +131,7 @@ async function getDataGn(gn) {
     creatTimeStr = creatTimeStr.substr(8, 15);
     if (!_.isEmpty(creatTimeStr)) {
         finalData['creatTimeStr'] = creatTimeStr;
-        console.info(creatTimeStr);
+        // console.info(creatTimeStr);
     }
     return returnData;
 }
