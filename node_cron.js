@@ -31,7 +31,7 @@ async function getUrl(urlKey = '') {
     let jsonString = scriptArr[1].replace("var allData =", "");
     jsonString = jsonString.replace(/^\s+|\s+$/g, "");
     jsonString = jsonString.substr(0, jsonString.length - 1);
-    console.info(jsonString);
+    // console.info(jsonString);
     let jsonData = JSON.parse(jsonString);
     let gn = jsonData['modules'][1]['data'][1];
     let gw = jsonData['modules'][1]['data'][2]
@@ -69,7 +69,7 @@ async function writeFinalData(data) {
 }
 
 async function getDataGn(gn) {
-    // console.info(gn['articleList']);
+    console.info(gn['articleList']);
     let returnData = [];
     let creatTimeStr = '';
     let d = gn['articleList'];
