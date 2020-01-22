@@ -16,8 +16,8 @@ let url = [{'key': 'ifeng', 'url': 'https://news.ifeng.com/c/special/7tPlDSzDgVk
  * 获取图集的URL
  */
 async function getUrl(urlKey = '') {
-    let tmpUrl = _.find(url, {'key': urlKey});
-    console.info(tmpUrl);
+    let urlData = _.find(url, {'key': urlKey});
+    let tmpUrl = urlData['url'];
 
     console.info("正在请求地址：" + JSON.stringify({tmpUrl}));
     const res = await request.get(tmpUrl);
