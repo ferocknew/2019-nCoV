@@ -7,15 +7,18 @@ const fs = require('fs');
 const path = require('path');
 
 let finalData = {};
-let url = ['https://news.ifeng.com/c/special/7tPlDSzDgVk'];
+let url = [{'key': 'ifeng', 'url': 'https://news.ifeng.com/c/special/7tPlDSzDgVk'}, {
+    'key': 'dingxiang',
+    'url': 'https://3g.dxy.cn/newh5/view/pneumonia'
+}];
 
 /**
  * 获取图集的URL
  */
-async function getUrl() {
-    finalData['data'] = [];
+async function getUrl(urlKey = '') {
+    let tmpUrl = _.find(url, {'key': urlKey});
+    console.info(tmpUrl);
 
-    let tmpUrl = url[0];
     console.info("正在请求地址：" + JSON.stringify({tmpUrl}));
     const res = await request.get(tmpUrl);
 
@@ -44,10 +47,6 @@ async function getUrl() {
     let filePath = path.join(__dirname, './jsonData/', fileName);
     let fileFlag = fs.existsSync(filePath);
     if (!fileFlag) {
-        // console.log(`正在下载${imgUrl}`);
-        // const req = request.get(imgUrl)
-        //     .set({'Referer': pageUrl});
-        // jsonString.pipe(fs.createWriteStream(filePath));
         fs.writeFileSync(filePath, jsonString);
     } else {
         console.info("文件已存在：" + JSON.stringify({filePath}));
@@ -103,8 +102,9 @@ async function getDataGn(gn) {
 }
 
 async function init() {
-    let urls = await getUrl();
-    console.info(finalData)
+    finalData['data'] = [];
+    await getUrl('ifeng');
+    console.info(finalData);
     process.exit();
 }
 
