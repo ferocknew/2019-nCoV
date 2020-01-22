@@ -21,6 +21,8 @@ async function getUrl(urlKey = '') {
     console.info("正在请求地址：" + JSON.stringify({tmpUrl}));
     const res = await request.get(tmpUrl);
 
+    console.info(res);
+
     let scriptArr = [];
     const $ = cheerio.load(res.text, {decodeEntities: false});
     let domLi = $('script').each(function (i, elem) {
