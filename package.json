@@ -1,0 +1,25 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node_cron.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferocknew/2019-nCoV.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ferocknew/2019-nCoV/issues"
+  },
+  "homepage": "https://github.com/ferocknew/2019-nCoV#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "superagent": "^5.2.1"
+  }
+}
