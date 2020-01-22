@@ -74,9 +74,15 @@
         context.marker.setContent(div)
     };
 
-    $.getJSON('https://raw.githubusercontent.com/ferocknew/2019-nCoV/master/data.json?', function (remoteData) {
+    points = [];
+    $.getJSON('./now.json?' + Date.parse(new Date()), function (remoteData) {
         console.info(remoteData);
-        points = remoteData;
+        var forData = remoteData['data'];
+        for (var v of forData) {
+            points.push(v['lnglat']);
+        }
+        console.info(points);
+        // points = remoteData;
         for (var i = 0; i < points.length; i += 1) {
             markers.push(new AMap.Marker({
                 position: points[i]['lnglat'],

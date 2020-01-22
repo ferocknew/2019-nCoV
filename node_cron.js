@@ -38,14 +38,19 @@ async function getUrl(urlKey = '') {
 
 async function getLocation(data = {}) {
     for (let k in data['data']) {
-        let city = encodeURIComponent(data['data'][k]['name']);
-        let baiduUrl = `https://api.map.baidu.com/geocoder?address=${city}&output=json&key=f247cdb592eb43ebac6ccd27f796e2d2`;
+        let city = data['data'][k]['name'] + "市";
+        console.info(city);
+
+        city = encodeURIComponent(data['data'][k]['name']);
+        let baiduUrl = "https://api.map.baidu.com/geocoder?address=" + city + "&output=json&key=f247cdb592eb43ebac6ccd27f796e2d2";
+        console.info(baiduUrl);
         const res = await request.get(baiduUrl);
         let bdData = JSON.parse(res.text);
 
         let lnglat = {'lnglat': []};
-        lnglat['lnglat'][0] = bdData['result']['location']['lng'];
-        lnglat['lnglat'][1] = bdData['result']['location']['lat'];
+        console.info(bdData['result']['location']);
+        lnglat['lnglat'][0] = bdData['result']['location']['lng'] + '';
+        lnglat['lnglat'][1] = bdData['result']['location']['lat'] + '';
         data['data'][k]['lnglat'] = lnglat;
     }
 
@@ -62,7 +67,9 @@ async function ifeng(domData = {}) {
         scriptArr.push(cou);
     });
 
-    let jsonString = scriptArr[1].replace("var allData =", "");
+    // console.info(scriptArr[3]);
+
+    let jsonString = scriptArr[3].replace("var allData =", "");
     jsonString = jsonString.replace(/^\s+|\s+$/g, "");
     jsonString = jsonString.substr(0, jsonString.length - 1);
     // console.info(jsonString);
