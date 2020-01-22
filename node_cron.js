@@ -69,7 +69,7 @@ async function writeFinalData(data) {
 }
 
 async function getDataGn(gn) {
-    console.info(gn['articleList']);
+    // console.info(gn['articleList']);
     let returnData = [];
     let creatTimeStr = '';
     let d = gn['articleList'];
