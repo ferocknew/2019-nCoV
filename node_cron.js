@@ -12,16 +12,31 @@ let url = [{'key': 'ifeng', 'url': 'https://news.ifeng.com/c/special/7tPlDSzDgVk
     'url': 'https://3g.dxy.cn/newh5/view/pneumonia'
 }];
 
-/**
- * 获取图集的URL
- */
+async function init() {
+    finalData['data'] = [];
+    await getUrl('ifeng');
+    console.info(finalData);
+    process.exit();
+}
+
+init();
+
 async function getUrl(urlKey = '') {
     let urlData = _.find(url, {'key': urlKey});
     let tmpUrl = urlData['url'];
     console.info("正在请求地址：" + JSON.stringify({tmpUrl}));
     const res = await request.get(tmpUrl);
 
+    finalData = await ifeng(res);
+    fs.writeFileSync(path.join(__dirname, './', 'now.json'), JSON.stringify(finalData));
+
+    // console.info(fileFlag);
+}
+
+async function ifeng(domData = {}) {
     let scriptArr = [];
+    let res = domData;
+
     const $ = cheerio.load(res.text, {decodeEntities: false});
     let domLi = $('script').each(function (i, elem) {
         let cou = $(this).html();
@@ -41,7 +56,6 @@ async function getUrl(urlKey = '') {
     writeFinalData(gnData);
     writeFinalData(gwData);
 
-
     let fileName = moment().format("YYYY-MM-DD_HHmm") + ".json";
     let filePath = path.join(__dirname, './jsonData/', fileName);
     let fileFlag = fs.existsSync(filePath);
@@ -51,9 +65,7 @@ async function getUrl(urlKey = '') {
         console.info("文件已存在：" + JSON.stringify({filePath}));
     }
 
-    fs.writeFileSync(path.join(__dirname, './', 'now.json'), JSON.stringify(finalData));
-
-    // console.info(fileFlag);
+    return finalData;
 }
 
 async function writeFinalData(data) {
@@ -101,13 +113,3 @@ async function getDataGn(gn) {
     }
     return returnData;
 }
-
-async function init() {
-    finalData['data'] = [];
-    await getUrl('ifeng');
-    console.info(finalData);
-    process.exit();
-}
-
-init();
-
