@@ -1,3 +1,4 @@
+now.json
 package-lock.json
 jsonData/*
 !jsonData/README.md
