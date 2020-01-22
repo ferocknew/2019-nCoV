@@ -86,6 +86,8 @@ async function getDataGn(gn) {
 
 
         let arr = str.split(" ");
+        console.info(arr);
+
         let numStr = arr[1].match(/\d+(.\d+)?/g);
         returnData.push({'arr': arr, 'num': numStr});
         // console.info(arr, numStr);
